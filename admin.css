@@ -15,6 +15,10 @@
   box-sizing: border-box;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -319,6 +323,11 @@ a {
 
 .primary-button:hover {
   background: var(--blue-dark);
+}
+
+.primary-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .stat-grid {
@@ -784,6 +793,208 @@ a {
   clip-path: inset(50%);
 }
 
+.auth-screen {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  padding: 24px;
+  background:
+    radial-gradient(circle at 15% 15%, rgba(32, 113, 170, 0.13), transparent 35%),
+    var(--page);
+}
+
+.auth-card {
+  width: min(100%, 410px);
+  padding: 34px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: white;
+  box-shadow: 0 16px 42px rgba(13, 46, 77, 0.1);
+}
+
+.auth-brand-mark {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 22px;
+  place-items: center;
+  border-radius: 14px;
+  background: #e9f4fc;
+  color: var(--blue);
+  font-size: 27px;
+}
+
+.auth-eyebrow {
+  margin: 0 0 8px;
+  color: var(--blue-dark);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+}
+
+.auth-card h1 {
+  margin: 0;
+  color: #0d2f4d;
+  font-size: 24px;
+}
+
+.auth-description {
+  margin: 9px 0 24px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.auth-card label {
+  display: block;
+  margin: 15px 0 7px;
+  color: #294a66;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.auth-card input {
+  width: 100%;
+  min-height: 42px;
+  padding: 0 12px;
+  border: 1px solid #ccd9e5;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ink);
+}
+
+.auth-card input:focus,
+.search-box:focus-within,
+.application-tools select:focus {
+  outline: 3px solid rgba(22, 114, 185, 0.16);
+  border-color: var(--blue);
+}
+
+.auth-submit {
+  width: 100%;
+  min-height: 43px;
+  margin-top: 21px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--blue);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.auth-submit:hover:not(:disabled) {
+  background: var(--blue-dark);
+}
+
+.auth-submit:disabled,
+.row-actions button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.auth-message {
+  min-height: 18px;
+  margin: 12px 0 0;
+  color: #47718e;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.auth-message.error,
+.demo-notice.error {
+  color: #b13d3d;
+}
+
+.auth-public-link {
+  display: inline-block;
+  margin-top: 12px;
+  color: var(--blue-dark);
+  font-size: 12px;
+}
+
+.sign-out-button {
+  min-height: 34px;
+  padding: 0 11px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: white;
+  color: #315571;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.sign-out-button:hover {
+  background: #f4f8fb;
+}
+
+.empty-message {
+  margin: 0;
+  padding: 18px 12px;
+  color: var(--muted);
+  font-size: 12px;
+  text-align: center;
+}
+
+.application-dialog {
+  width: min(92vw, 480px);
+  max-height: min(80vh, 640px);
+  padding: 26px;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  color: var(--ink);
+}
+
+.application-dialog::backdrop {
+  background: rgba(8, 29, 47, 0.52);
+}
+
+.dialog-close-form {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.dialog-close {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: white;
+  color: #45627b;
+  cursor: pointer;
+  font-size: 21px;
+}
+
+.application-dialog h2 {
+  margin: 0 0 18px;
+  color: #0d2f4d;
+  font-size: 21px;
+}
+
+.details-list {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  gap: 12px;
+  margin: 0;
+  font-size: 12px;
+}
+
+.details-list dt {
+  color: var(--muted);
+}
+
+.details-list dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: #173b59;
+  font-weight: 600;
+}
+
+.demo-notice {
+  min-height: 16px;
+}
+
 @media (min-width: 1500px) {
   .dashboard-content {
     padding-right: 42px;
@@ -893,6 +1104,10 @@ a {
 @media (max-width: 560px) {
   .account-copy {
     display: none;
+  }
+
+  .sign-out-button {
+    padding: 0 8px;
   }
 
   .welcome h1 {

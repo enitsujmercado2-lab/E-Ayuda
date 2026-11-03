@@ -9,9 +9,26 @@
     />
     <title>Admin Dashboard | E-Ayuda</title>
     <link rel="stylesheet" href="admin.css" />
+    <script type="module" src="admin.js"></script>
   </head>
   <body>
-    <div class="admin-layout">
+    <section class="auth-screen" id="auth-screen" aria-labelledby="auth-title">
+      <form class="auth-card" id="login-form">
+        <div class="auth-brand-mark" aria-hidden="true">♡</div>
+        <p class="auth-eyebrow">E-AYUDA ADMIN</p>
+        <h1 id="auth-title">Sign in to your dashboard</h1>
+        <p class="auth-description">Use your authorized administrator account to continue.</p>
+        <label for="login-email">Email address</label>
+        <input id="login-email" name="email" type="email" autocomplete="username" required />
+        <label for="login-password">Password</label>
+        <input id="login-password" name="password" type="password" autocomplete="current-password" required />
+        <button class="auth-submit" id="login-submit" type="submit">Sign in</button>
+        <p class="auth-message" id="auth-message" role="status" aria-live="polite"></p>
+        <a class="auth-public-link" href="E-ayuda%20Public.html">← Return to public page</a>
+      </form>
+    </section>
+
+    <div class="admin-layout" id="admin-layout" hidden>
       <aside class="sidebar">
         <a class="brand" href="admin.html" aria-label="E-Ayuda admin dashboard">
           <span class="brand-mark" aria-hidden="true">♡</span>
@@ -28,7 +45,7 @@
           </a>
           <a class="nav-link" href="#applications">
             <span class="nav-icon" aria-hidden="true">♙</span>
-            Applications <span class="nav-count">2</span>
+            Applications             <span class="nav-count" id="pending-nav-count">0</span>
           </a>
           <a class="nav-link" href="#programs">
             <span class="nav-icon" aria-hidden="true">▤</span>Programs
@@ -52,8 +69,8 @@
       <main class="main-content" id="dashboard">
         <header class="topbar">
           <div class="welcome">
-            <p class="current-date">Tuesday, April 22</p>
-            <h1>Good morning, Admin</h1>
+            <p class="current-date" id="current-date"></p>
+            <h1 id="welcome-heading">Dashboard</h1>
           </div>
           <div class="account-area">
             <button class="notification-button" type="button" aria-label="Notifications">
@@ -61,9 +78,10 @@
             </button>
             <div class="avatar" aria-hidden="true">MA</div>
             <div class="account-copy">
-              <strong>Municipal Admin</strong>
+              <strong id="account-name">Administrator</strong>
               <small>Program Officer</small>
             </div>
+            <button class="sign-out-button" id="sign-out" type="button">Sign out</button>
           </div>
         </header>
 
@@ -73,9 +91,9 @@
               <h2 id="overview-title">Dashboard overview</h2>
               <p>Track assistance programs and review community applications.</p>
             </div>
-            <a class="primary-button" href="#programs">
+            <button class="primary-button" type="button" disabled title="Program creation is not connected yet">
               <span aria-hidden="true">＋</span> Create new program
-            </a>
+            </button>
           </section>
 
           <section class="stat-grid" aria-label="Application summary">
@@ -83,15 +101,15 @@
               <span class="stat-icon blue" aria-hidden="true">▤</span>
               <div>
                 <p>Total applications</p>
-                <strong>317</strong>
-                <small><b>+12%</b> from last month</small>
+                <strong id="total-applications">—</strong>
+                  <small>All submitted applications</small>
               </div>
             </article>
             <article class="stat-card">
               <span class="stat-icon amber" aria-hidden="true">◷</span>
               <div>
                 <p>Needs review</p>
-                <strong>2</strong>
+                <strong id="pending-applications">—</strong>
                 <small>Awaiting your action</small>
               </div>
             </article>
@@ -99,15 +117,15 @@
               <span class="stat-icon green" aria-hidden="true">✓</span>
               <div>
                 <p>Confirmed</p>
-                <strong>222</strong>
-                <small><b>71%</b> approval rate</small>
+                <strong id="confirmed-applications">—</strong>
+                <small>Confirmed applications</small>
               </div>
             </article>
             <article class="stat-card">
               <span class="stat-icon purple" aria-hidden="true">▦</span>
               <div>
                 <p>Active programs</p>
-                <strong>3</strong>
+                <strong id="active-program-count">—</strong>
                 <small>Accepting applications</small>
               </div>
             </article>
@@ -120,17 +138,9 @@
                   <h3>Applications this week</h3>
                   <p>Daily applications received</p>
                 </div>
-                <span class="growth-badge">+18% this week</span>
+                <span class="growth-badge" id="week-total">This week</span>
               </div>
-              <div class="chart" role="img" aria-label="Applications received: Monday 42, Tuesday 68, Wednesday 49, Thursday 82, Friday 73, Saturday 94, Sunday 62">
-                <div class="chart-day"><div class="bar-track"><span style="--bar-height: 45%"></span></div><small>Mon</small></div>
-                <div class="chart-day"><div class="bar-track"><span style="--bar-height: 72%"></span></div><small>Tue</small></div>
-                <div class="chart-day"><div class="bar-track"><span style="--bar-height: 52%"></span></div><small>Wed</small></div>
-                <div class="chart-day"><div class="bar-track"><span style="--bar-height: 87%"></span></div><small>Thu</small></div>
-                <div class="chart-day"><div class="bar-track"><span style="--bar-height: 77%"></span></div><small>Fri</small></div>
-                <div class="chart-day"><div class="bar-track"><span style="--bar-height: 100%"></span></div><small>Sat</small></div>
-                <div class="chart-day"><div class="bar-track"><span style="--bar-height: 66%"></span></div><small>Sun</small></div>
-              </div>
+              <div class="chart" id="applications-chart" aria-label="Applications received each day this week"></div>
             </article>
 
             <article class="panel active-programs" id="programs">
@@ -140,29 +150,7 @@
                   <p>Current application progress</p>
                 </div>
               </div>
-              <div class="program-progress-list">
-                <div class="program-progress">
-                  <div class="progress-label">
-                    <strong>Family Food Assistance Program</strong>
-                    <span>146 / 250</span>
-                  </div>
-                  <div class="progress-track"><span style="--progress: 58.4%"></span></div>
-                </div>
-                <div class="program-progress">
-                  <div class="progress-label">
-                    <strong>Back-to-School Supplies</strong>
-                    <span>98 / 180</span>
-                  </div>
-                  <div class="progress-track"><span style="--progress: 54.4%"></span></div>
-                </div>
-                <div class="program-progress">
-                  <div class="progress-label">
-                    <strong>Senior Citizen Cash Aid</strong>
-                    <span>73 / 120</span>
-                  </div>
-                  <div class="progress-track"><span style="--progress: 60.8%"></span></div>
-                </div>
-              </div>
+              <div class="program-progress-list" id="active-program-list"></div>
             </article>
           </section>
 
@@ -180,75 +168,26 @@
                 </label>
                 <label class="sr-only" for="status-filter">Filter by status</label>
                 <select id="status-filter">
-                  <option>All statuses</option>
-                  <option>Pending</option>
-                  <option>Confirmed</option>
+                  <option value="all">All statuses</option>
+                  <option value="pending">Pending</option>
+                  <option value="confirmed">Confirmed</option>
+                  <option value="rejected">Rejected</option>
                 </select>
               </form>
             </div>
 
-            <div class="application-groups">
-              <article class="application-group">
-                <div class="group-heading">
-                  <span class="group-dot blue-dot" aria-hidden="true"></span>
-                  <div>
-                    <h4>Family Food Assistance Program</h4>
-                    <p>Open to all qualified residents</p>
-                  </div>
-                  <span class="applicant-count">2 applicants</span>
-                </div>
-                <div class="table-heading">
-                  <span>Applicant</span><span>Submitted</span><span>Status</span><span class="sr-only">Actions</span>
-                </div>
-                <div class="application-row">
-                  <div class="applicant-cell"><span class="row-number">1</span><span><strong>Maria Santos</strong><small>Application #101</small></span></div>
-                  <span class="submitted">Today, 9:42 AM</span>
-                  <span class="status-badge pending">Pending</span>
-                  <div class="row-actions">
-                    <button type="button" class="view-button">◉ View</button>
-                    <button type="button" class="confirm-button">✓ Confirm</button>
-                    <button type="button" class="icon-button" aria-label="More actions for Maria Santos">⋮</button>
-                  </div>
-                </div>
-                <div class="application-row" id="confirmed">
-                  <div class="applicant-cell"><span class="row-number">2</span><span><strong>Elena Reyes</strong><small>Application #103</small></span></div>
-                  <span class="submitted">Yesterday, 3:24 PM</span>
-                  <span class="status-badge confirmed">Confirmed</span>
-                  <div class="row-actions">
-                    <button type="button" class="view-button">◉ View</button>
-                    <button type="button" class="icon-button" aria-label="More actions for Elena Reyes">⋮</button>
-                  </div>
-                </div>
-              </article>
-
-              <article class="application-group">
-                <div class="group-heading">
-                  <span class="group-dot purple-dot" aria-hidden="true"></span>
-                  <div>
-                    <h4>Back-to-School Supplies</h4>
-                    <p>Public school students only</p>
-                  </div>
-                  <span class="applicant-count">1 applicant</span>
-                </div>
-                <div class="table-heading">
-                  <span>Applicant</span><span>Submitted</span><span>Status</span><span class="sr-only">Actions</span>
-                </div>
-                <div class="application-row">
-                  <div class="applicant-cell"><span class="row-number">1</span><span><strong>Roberto Cruz</strong><small>Application #102</small></span></div>
-                  <span class="submitted">Today, 8:15 AM</span>
-                  <span class="status-badge pending">Pending</span>
-                  <div class="row-actions">
-                    <button type="button" class="view-button">◉ View</button>
-                    <button type="button" class="confirm-button">✓ Confirm</button>
-                    <button type="button" class="icon-button" aria-label="More actions for Roberto Cruz">⋮</button>
-                  </div>
-                </div>
-              </article>
-            </div>
+            <div class="application-groups" id="application-groups" aria-live="polite"></div>
           </section>
-          <p class="demo-notice">Dashboard preview with sample data. Sign-in, live records, and review actions are not connected yet.</p>
+          <p class="demo-notice" id="dashboard-message" role="status" aria-live="polite"></p>
         </div>
       </main>
     </div>
+
+    <dialog class="application-dialog" id="application-dialog">
+      <form method="dialog" class="dialog-close-form">
+        <button class="dialog-close" aria-label="Close application details">×</button>
+      </form>
+      <div id="application-details"></div>
+    </dialog>
   </body>
 </html>
