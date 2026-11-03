@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Forgot Password</title>
   <link rel="stylesheet" href="style.css">
+  <script type="module" src="auth.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 </head>
 <body>
@@ -61,13 +62,13 @@
       </p>
 
       <!-- Reset Password Form -->
-      <form action="#" method="POST" class="auth-form">
+      <form class="auth-form" id="forgot-password-form">
         
         <div class="form-group">
           <label for="email">Email Address <span class="required">*</span></label>
           <div class="input-wrapper">
             <i class="ri-mail-line input-icon"></i>
-            <input type="email" id="email" placeholder="Enter your email address" required>
+            <input type="email" id="email" name="email" autocomplete="email" placeholder="Enter your email address" required>
           </div>
         </div>
 
@@ -75,6 +76,7 @@
         <button type="submit" class="submit-btn">
           <i class="ri-send-plane-line"></i> Send Reset Link <i class="ri-arrow-right-line"></i>
         </button>
+        <p class="auth-feedback" id="auth-feedback" role="status" aria-live="polite"></p>
       </form>
 
       <!-- Divider -->

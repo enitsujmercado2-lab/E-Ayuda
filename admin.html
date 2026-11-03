@@ -50,7 +50,7 @@
           <a class="nav-link" href="#programs">
             <span class="nav-icon" aria-hidden="true">▤</span>Programs
           </a>
-          <a class="nav-link" href="#confirmed">
+          <a class="nav-link" href="#applications" data-filter-status="confirmed">
             <span class="nav-icon" aria-hidden="true">✓</span>Confirmed
           </a>
         </nav>
@@ -91,7 +91,7 @@
               <h2 id="overview-title">Dashboard overview</h2>
               <p>Track assistance programs and review community applications.</p>
             </div>
-            <button class="primary-button" type="button" disabled title="Program creation is not connected yet">
+            <button class="primary-button" id="create-program-button" type="button">
               <span aria-hidden="true">＋</span> Create new program
             </button>
           </section>
@@ -158,7 +158,7 @@
             <div class="applications-heading">
               <div>
                 <h3>Recent applications</h3>
-                <p>Review and validate submitted applications.</p>
+                <p>Review and validate the latest 500 submitted applications.</p>
               </div>
               <form class="application-tools" role="search">
                 <label class="search-box">
@@ -188,6 +188,45 @@
         <button class="dialog-close" aria-label="Close application details">×</button>
       </form>
       <div id="application-details"></div>
+    </dialog>
+
+    <dialog class="application-dialog" id="program-dialog">
+      <form class="program-form" id="program-form">
+        <div class="dialog-title-row">
+          <div>
+            <p class="auth-eyebrow">PROGRAM MANAGEMENT</p>
+            <h2>Create a program</h2>
+          </div>
+          <button class="dialog-close" type="button" id="close-program" aria-label="Close program form">×</button>
+        </div>
+        <label for="program-name">Program name</label>
+        <input id="program-name" name="name" maxlength="160" required />
+        <label for="program-category">Category</label>
+        <select id="program-category" name="category" required>
+          <option value="food">Food</option>
+          <option value="education">Education</option>
+          <option value="financial">Financial</option>
+          <option value="other">Other</option>
+        </select>
+        <label for="program-description">Description</label>
+        <textarea id="program-description" name="description" rows="3" maxlength="1500" required></textarea>
+        <label for="program-eligibility">Eligibility</label>
+        <textarea id="program-eligibility" name="eligibility" rows="2" maxlength="1000" required></textarea>
+        <label for="program-requirements">Required documents (one per line)</label>
+        <textarea id="program-requirements" name="requirements" rows="3"></textarea>
+        <div class="program-form-row">
+          <div>
+            <label for="program-deadline">Application deadline</label>
+            <input id="program-deadline" name="application_deadline" type="date" />
+          </div>
+          <div>
+            <label for="program-slots">Available slots</label>
+            <input id="program-slots" name="slot_limit" type="number" min="1" step="1" required />
+          </div>
+        </div>
+        <p class="auth-message" id="program-message" role="status" aria-live="polite"></p>
+        <button class="auth-submit" id="save-program-button" type="submit">Create program</button>
+      </form>
     </dialog>
   </body>
 </html>

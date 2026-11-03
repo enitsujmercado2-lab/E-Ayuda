@@ -12,6 +12,10 @@ const statusFilter = document.querySelector("#status-filter");
 const applicationGroups = document.querySelector("#application-groups");
 const applicationDialog = document.querySelector("#application-dialog");
 const applicationDetails = document.querySelector("#application-details");
+const programDialog = document.querySelector("#program-dialog");
+const programForm = document.querySelector("#program-form");
+const programMessage = document.querySelector("#program-message");
+const saveProgramButton = document.querySelector("#save-program-button");
 
 const requiredConfig = [SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY];
 const configIsPresent = requiredConfig.every(
@@ -22,13 +26,24 @@ let supabase;
 let currentUser;
 let applications = [];
 let programs = [];
+let weekApplications = [];
+let applicationCountsByProgram = new Map();
+let totalApplicationCount = 0;
+let pendingApplicationCount = 0;
+let confirmedApplicationCount = 0;
 let isLoading = false;
 
 function showAuth(message = "") {
   authScreen.hidden = false;
   adminLayout.hidden = true;
+  currentUser = undefined;
   applications = [];
   programs = [];
+  weekApplications = [];
+  applicationCountsByProgram = new Map();
+  totalApplicationCount = 0;
+  pendingApplicationCount = 0;
+  confirmedApplicationCount = 0;
   applicationGroups.replaceChildren();
   document.querySelector("#active-program-list").replaceChildren();
   setText("#total-applications", "—");
@@ -72,29 +87,22 @@ function makeElement(tag, className, text) {
 }
 
 function updateSummary() {
-  const pendingCount = applications.filter((application) => application.status === "pending").length;
-  const confirmedCount = applications.filter((application) => application.status === "confirmed").length;
-  const activePrograms = programs.filter((program) => program.is_active);
+  const activePrograms = programs.filter(isAcceptingProgram);
 
-  setText("#total-applications", String(applications.length));
-  setText("#pending-applications", String(pendingCount));
-  setText("#confirmed-applications", String(confirmedCount));
+  setText("#total-applications", String(totalApplicationCount));
+  setText("#pending-applications", String(pendingApplicationCount));
+  setText("#confirmed-applications", String(confirmedApplicationCount));
   setText("#active-program-count", String(activePrograms.length));
-  setText("#pending-nav-count", String(pendingCount));
+  setText("#pending-nav-count", String(pendingApplicationCount));
   setText("#current-date", new Intl.DateTimeFormat(undefined, { dateStyle: "full" }).format(new Date()));
   setText("#welcome-heading", `Good day, ${currentUser?.email ?? "Admin"}`);
   setText("#account-name", currentUser?.email ?? "Administrator");
-  setText("#week-total", `${applications.filter(isThisWeek).length} this week`);
+  setText("#week-total", `${weekApplications.length} this week`);
 }
 
-function isThisWeek(application) {
-  if (!application.submitted_at) return false;
-  const now = new Date();
-  const startOfWeek = new Date(now);
-  const daysSinceMonday = (now.getDay() + 6) % 7;
-  startOfWeek.setDate(now.getDate() - daysSinceMonday);
-  startOfWeek.setHours(0, 0, 0, 0);
-  return new Date(application.submitted_at) >= startOfWeek;
+function isAcceptingProgram(program) {
+  const today = new Date().toISOString().slice(0, 10);
+  return program.is_active && (!program.application_deadline || program.application_deadline >= today);
 }
 
 function renderChart() {
@@ -107,7 +115,7 @@ function renderChart() {
   monday.setDate(today.getDate() - ((today.getDay() + 6) % 7));
   monday.setHours(0, 0, 0, 0);
 
-  for (const application of applications) {
+  for (const application of weekApplications) {
     if (!application.submitted_at) continue;
     const submitted = new Date(application.submitted_at);
     const dayIndex = Math.floor((submitted - monday) / 86400000);
@@ -130,7 +138,7 @@ function renderChart() {
 function renderPrograms() {
   const list = document.querySelector("#active-program-list");
   list.replaceChildren();
-  const activePrograms = programs.filter((program) => program.is_active);
+  const activePrograms = programs.filter(isAcceptingProgram);
 
   if (activePrograms.length === 0) {
     list.append(makeElement("p", "empty-message", "No active programs."));
@@ -138,7 +146,7 @@ function renderPrograms() {
   }
 
   for (const program of activePrograms) {
-    const received = applications.filter((application) => application.program_id === program.id).length;
+    const received = applicationCountsByProgram.get(program.id) ?? 0;
     const progress = program.slot_limit > 0
       ? Math.min(100, (received / program.slot_limit) * 100)
       : 0;
@@ -226,8 +234,12 @@ function renderApplicationRow(application, rowNumber) {
   if (application.status === "pending") {
     const confirmButton = makeElement("button", "confirm-button", "✓ Confirm");
     confirmButton.type = "button";
-    confirmButton.addEventListener("click", () => confirmApplication(application, confirmButton));
+    confirmButton.addEventListener("click", () => updateApplicationStatus(application, "confirmed", confirmButton));
     actions.append(confirmButton);
+    const rejectButton = makeElement("button", "reject-button", "Reject");
+    rejectButton.type = "button";
+    rejectButton.addEventListener("click", () => updateApplicationStatus(application, "rejected", rejectButton));
+    actions.append(rejectButton);
   }
 
   row.append(applicant, submitted, status, actions);
@@ -259,55 +271,124 @@ function showApplicationDetails(application) {
     list.append(makeElement("dt", "", label), makeElement("dd", "", value));
   }
   applicationDetails.append(list);
+
+  if (application.status === "pending") {
+    const notesLabel = makeElement("label", "review-notes-label", "Private reviewer notes");
+    notesLabel.htmlFor = "review-notes";
+    const notesInput = makeElement("textarea", "review-notes-input");
+    notesInput.id = "review-notes";
+    notesInput.maxLength = 2000;
+    notesInput.value = application.reviewer_notes ?? "";
+    applicationDetails.append(notesLabel, notesInput);
+    const actions = makeElement("div", "dialog-actions");
+    const confirmButton = makeElement("button", "confirm-button", "Confirm application");
+    confirmButton.type = "button";
+    confirmButton.addEventListener("click", async () => {
+      if (await updateApplicationStatus(application, "confirmed", confirmButton, notesInput.value)) applicationDialog.close();
+    });
+    const rejectButton = makeElement("button", "reject-button", "Reject");
+    rejectButton.type = "button";
+    rejectButton.addEventListener("click", async () => {
+      if (await updateApplicationStatus(application, "rejected", rejectButton, notesInput.value)) applicationDialog.close();
+    });
+    actions.append(confirmButton, rejectButton);
+    applicationDetails.append(actions);
+  }
   applicationDialog.showModal();
 }
 
-async function confirmApplication(application, button) {
+async function updateApplicationStatus(application, status, button, reviewerNotes = null) {
   button.disabled = true;
   setDashboardMessage("");
-  const { error } = await supabase
-    .from("applications")
-    .update({
-      status: "confirmed",
-      reviewed_at: new Date().toISOString(),
-      reviewed_by: currentUser.id,
-    })
-    .eq("id", application.id)
-    .eq("status", "pending");
+  const { error } = await supabase.rpc("review_application", {
+    p_application_id: application.id,
+    p_status: status,
+    p_reviewer_notes: reviewerNotes,
+  });
 
   if (error) {
     button.disabled = false;
-    setDashboardMessage(`Could not confirm application: ${error.message}`, true);
-    return;
+    setDashboardMessage(`Could not ${status} application: ${error.message}`, true);
+    return false;
   }
 
   await loadDashboard();
-  setDashboardMessage("Application confirmed.");
+  setDashboardMessage(`Application ${status}.`);
+  return true;
 }
 
 async function loadDashboard() {
   if (isLoading) return;
+  const loadingUserId = currentUser?.id;
+  if (!loadingUserId) return;
   isLoading = true;
   setDashboardMessage("Loading dashboard data…");
   applicationGroups.replaceChildren();
   applicationGroups.append(makeElement("p", "empty-message", "Loading applications…"));
 
   try {
-    const [programResult, applicationResult] = await Promise.all([
+    const now = new Date();
+    const weekStart = new Date(now);
+    weekStart.setDate(now.getDate() - ((now.getDay() + 6) % 7));
+    weekStart.setHours(0, 0, 0, 0);
+    const [programResult, applicationResult, reviewResult, totalResult, pendingResult, confirmedResult, weekResult] = await Promise.all([
       supabase
         .from("programs")
         .select("id,name,category,description,eligibility,requirements,application_deadline,slot_limit,is_active,created_at")
         .order("created_at", { ascending: false }),
       supabase
         .from("applications")
-        .select("id,program_id,applicant_name,applicant_email,applicant_phone,status,reviewer_notes,submitted_at,reviewed_at,reviewed_by")
-        .order("submitted_at", { ascending: false }),
+        .select("id,program_id,applicant_name,applicant_email,applicant_phone,status,submitted_at")
+        .order("submitted_at", { ascending: false })
+        .range(0, 499),
+      supabase.from("application_reviews").select("application_id,reviewer_notes"),
+      supabase.from("applications").select("id", { count: "exact", head: true }),
+      supabase.from("applications").select("id", { count: "exact", head: true }).eq("status", "pending"),
+      supabase.from("applications").select("id", { count: "exact", head: true }).eq("status", "confirmed"),
+      supabase
+        .from("applications")
+        .select("submitted_at")
+        .gte("submitted_at", weekStart.toISOString())
+        .lt("submitted_at", new Date(weekStart.getTime() + 7 * 86400000).toISOString()),
     ]);
 
     if (programResult.error) throw new Error(`Could not load programs: ${programResult.error.message}`);
     if (applicationResult.error) throw new Error(`Could not load applications: ${applicationResult.error.message}`);
+    if (reviewResult.error) throw new Error(`Could not load private review notes: ${reviewResult.error.message}`);
+    if (totalResult.error) throw new Error(`Could not count applications: ${totalResult.error.message}`);
+    if (pendingResult.error) throw new Error(`Could not count pending applications: ${pendingResult.error.message}`);
+    if (confirmedResult.error) throw new Error(`Could not count confirmed applications: ${confirmedResult.error.message}`);
+    if (weekResult.error) throw new Error(`Could not load weekly application totals: ${weekResult.error.message}`);
+    if (currentUser?.id !== loadingUserId) return;
     programs = programResult.data;
-    applications = applicationResult.data;
+    const reviewNotes = new Map(
+      reviewResult.data.map((review) => [review.application_id, review.reviewer_notes]),
+    );
+    applications = applicationResult.data.map((application) => ({
+      ...application,
+      reviewer_notes: reviewNotes.get(application.id) ?? null,
+    }));
+    totalApplicationCount = totalResult.count ?? 0;
+    pendingApplicationCount = pendingResult.count ?? 0;
+    confirmedApplicationCount = confirmedResult.count ?? 0;
+    weekApplications = weekResult.data ?? [];
+    const activePrograms = programs.filter(isAcceptingProgram);
+    const programCounts = await Promise.all(activePrograms.map((program) =>
+      supabase
+        .from("applications")
+        .select("id", { count: "exact", head: true })
+        .eq("program_id", program.id)
+        .in("status", ["pending", "confirmed"]),
+    ));
+    for (let index = 0; index < programCounts.length; index += 1) {
+      if (programCounts[index].error) {
+        throw new Error(`Could not count applications for ${activePrograms[index].name}: ${programCounts[index].error.message}`);
+      }
+    }
+    if (currentUser?.id !== loadingUserId) return;
+    applicationCountsByProgram = new Map(
+      activePrograms.map((program, index) => [program.id, programCounts[index].count ?? 0]),
+    );
     updateSummary();
     renderPrograms();
     renderChart();
@@ -350,6 +431,49 @@ async function verifyAdmin(user) {
   await loadDashboard();
 }
 
+document.querySelector("#create-program-button").addEventListener("click", () => {
+  programForm.reset();
+  programMessage.textContent = "";
+  programDialog.showModal();
+});
+
+document.querySelector("#close-program").addEventListener("click", () => programDialog.close());
+
+programForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const formData = new FormData(programForm);
+  const requirements = String(formData.get("requirements"))
+    .split(/\r?\n/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+
+  saveProgramButton.disabled = true;
+  programMessage.textContent = "Creating program…";
+  programMessage.classList.remove("error");
+
+  const { error } = await supabase.from("programs").insert({
+    name: String(formData.get("name")).trim(),
+    category: String(formData.get("category")),
+    description: String(formData.get("description")).trim(),
+    eligibility: String(formData.get("eligibility")).trim(),
+    requirements,
+    application_deadline: String(formData.get("application_deadline")) || null,
+    slot_limit: Number(formData.get("slot_limit")),
+    is_active: true,
+  });
+
+  saveProgramButton.disabled = false;
+  if (error) {
+    programMessage.textContent = `Could not create program: ${error.message}`;
+    programMessage.classList.add("error");
+    return;
+  }
+
+  programDialog.close();
+  await loadDashboard();
+  setDashboardMessage("Program created.");
+});
+
 if (!configIsPresent) {
   showAuth("Set your Supabase project URL and publishable key in supabase-config.js, then reload this page.");
   loginSubmit.disabled = true;
@@ -390,6 +514,10 @@ if (!configIsPresent) {
 
   searchInput.addEventListener("input", renderApplications);
   statusFilter.addEventListener("change", renderApplications);
+  document.querySelector("[data-filter-status='confirmed']").addEventListener("click", () => {
+    statusFilter.value = "confirmed";
+    renderApplications();
+  });
   supabase.auth.getSession().then(({ data, error }) => {
     if (error) {
       showAuth(`Could not restore your session: ${error.message}`);

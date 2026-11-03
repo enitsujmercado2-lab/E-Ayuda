@@ -760,6 +760,17 @@ a {
   color: #18835e;
 }
 
+.row-actions .reject-button,
+.dialog-actions .reject-button {
+  border-color: #edcaca;
+  color: #a33a3a;
+}
+
+.row-actions .reject-button:hover,
+.dialog-actions .reject-button:hover {
+  background: #fff3f3;
+}
+
 .row-actions .icon-button {
   width: 29px;
   padding: 0;
@@ -989,6 +1000,120 @@ a {
   overflow-wrap: anywhere;
   color: #173b59;
   font-weight: 600;
+}
+
+.dialog-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.dialog-title-row h2 {
+  margin: 0;
+  color: #0d2f4d;
+  font-size: 21px;
+}
+
+.program-form {
+  display: grid;
+  gap: 9px;
+}
+
+.program-form label {
+  margin-top: 4px;
+  color: #294a66;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.program-form input,
+.program-form select,
+.program-form textarea {
+  width: 100%;
+  min-height: 38px;
+  padding: 8px 10px;
+  border: 1px solid #ccd9e5;
+  border-radius: 8px;
+  background: white;
+  color: var(--ink);
+  font: inherit;
+  font-size: 12px;
+}
+
+.program-form textarea {
+  resize: vertical;
+}
+
+.program-form input:focus,
+.program-form select:focus,
+.program-form textarea:focus {
+  outline: 3px solid rgba(22, 114, 185, 0.16);
+  border-color: var(--blue);
+}
+
+.program-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.program-form-row > div {
+  display: grid;
+  gap: 8px;
+}
+
+.dialog-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.dialog-actions button {
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid #cbd9e5;
+  border-radius: 7px;
+  background: white;
+  color: #28699e;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.dialog-actions .confirm-button {
+  border-color: #b8decf;
+  color: #18835e;
+}
+
+.review-notes-label {
+  display: block;
+  margin: 18px 0 7px;
+  color: #526d85;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.review-notes-input {
+  width: 100%;
+  min-height: 76px;
+  padding: 9px 10px;
+  resize: vertical;
+  border: 1px solid #ccd9e5;
+  border-radius: 8px;
+  color: var(--ink);
+  font: inherit;
+  font-size: 12px;
+}
+
+.review-notes-input:focus {
+  outline: 3px solid rgba(22, 114, 185, 0.16);
+  border-color: var(--blue);
+}
+
+.program-form .auth-message {
+  margin: 0;
 }
 
 .demo-notice {

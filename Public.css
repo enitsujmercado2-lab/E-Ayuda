@@ -841,3 +841,234 @@ button span {
   }
 }
 
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 28px;
+  padding: 18px 26px;
+  border-radius: 16px;
+  background: rgba(244, 249, 255, 0.95);
+  box-shadow: 0 20px 24px rgba(15, 60, 92, 0.12);
+  color: var(--ink);
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.hero-cta span {
+  margin-left: 14px;
+  font-size: 1.3rem;
+}
+
+.program-message {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 24px;
+  color: rgba(8, 58, 95, 0.72);
+  text-align: center;
+}
+
+.error-message {
+  color: #a33131;
+}
+
+.status-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.apply-dialog {
+  width: min(92vw, 480px);
+  max-height: 85vh;
+  padding: 0;
+  overflow: auto;
+  border: 1px solid rgba(17, 90, 142, 0.22);
+  border-radius: 18px;
+  color: var(--ink);
+}
+
+.apply-dialog::backdrop {
+  background: rgba(8, 29, 47, 0.56);
+}
+
+.apply-form {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+}
+
+.apply-dialog-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 34px;
+  height: 34px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid rgba(17, 90, 142, 0.2);
+  border-radius: 9px;
+  background: white;
+  color: var(--ink);
+  box-shadow: none;
+  font-size: 1.4rem;
+}
+
+.apply-form h2 {
+  margin: 0;
+  color: #0a3355;
+  font-size: 1.6rem;
+}
+
+.apply-account {
+  margin: 8px 0 18px;
+  color: rgba(8, 58, 95, 0.7);
+  font-size: 0.9rem;
+}
+
+.apply-form label:not(.consent-label) {
+  margin-bottom: 7px;
+  color: #294a66;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.apply-form input[type="tel"] {
+  min-height: 46px;
+  padding: 0 12px;
+  border: 1px solid rgba(17, 90, 142, 0.25);
+  border-radius: 9px;
+}
+
+.consent-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  margin-top: 16px;
+  color: rgba(8, 58, 95, 0.78);
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+
+.consent-label input {
+  margin-top: 3px;
+}
+
+.form-message {
+  min-height: 20px;
+  margin: 12px 0 0;
+  color: rgba(8, 58, 95, 0.76);
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+
+.apply-form .check-btn {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.apply-form .check-btn:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+@media (max-width: 560px) {
+  .apply-form {
+    padding: 24px 20px;
+  }
+}
+
+.my-applications {
+  width: min(100% - 40px, 1000px);
+  min-height: 65vh;
+  margin: 0 auto;
+  padding: 64px 0 84px;
+  color: var(--ink);
+}
+
+.my-applications h1 {
+  margin: 0;
+  color: #0a3355;
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+.my-applications .helper-text {
+  margin-bottom: 26px;
+}
+
+.my-applications-list {
+  display: grid;
+  gap: 12px;
+}
+
+.my-application-card {
+  position: relative;
+  padding: 20px;
+  border: 1px solid rgba(17, 90, 142, 0.16);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 8px 20px rgba(22, 50, 76, 0.04);
+}
+
+.my-application-card h2 {
+  margin: 0 0 8px;
+  color: #0d3357;
+  font-size: 1.15rem;
+}
+
+.my-application-card > p {
+  margin: 8px 0 0;
+  color: rgba(8, 58, 95, 0.72);
+  font-size: 0.9rem;
+}
+
+.my-status {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 99px;
+  background: #edf3fb;
+  color: #1e4f7d;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.my-status.pending {
+  background: #fff4df;
+  color: #a76b14;
+}
+
+.my-status.confirmed {
+  background: #e8f6ef;
+  color: #16835d;
+}
+
+.my-status.rejected {
+  background: #fdecec;
+  color: #a33131;
+}
+
+.account-message {
+  color: #a33131;
+  font-size: 0.9rem;
+}
+
+.account-back-link,
+.account-login-link {
+  display: inline-block;
+  margin-top: 20px;
+  color: var(--blue-700);
+  font-weight: 700;
+}
+
+.account-sign-out {
+  padding: 9px 14px;
+  border: 1px solid rgba(8, 58, 95, 0.16);
+  border-radius: 9px;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+}

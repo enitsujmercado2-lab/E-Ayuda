@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>E-Ayuda SignUp Portal</title>
+  <title>Create an E-Ayuda Account</title>
   <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
+  <script type="module" src="auth.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 </head>
 <body>
@@ -36,21 +36,13 @@
           </div>
         </div>
 
-        <form action="index.html" method="POST" class="user-form">
+        <form class="user-form" id="signup-form">
 
           <div class="form">
-            <label for="FullName">Full Name</label>
+            <label for="signup-name">Full Name</label>
             <div class="Signup-input">
               <i class="ri-user-line input-icon"></i>
-              <input type="text" id="Fullname" placeholder="Enter your Full name" required>
-            </div>
-          </div>
-
-          <div class="form">
-            <label for="address">Address</label>
-            <div class="Signup-input">
-              <i class="ri-map-pin-line input-icon"></i>
-              <input type="text" id="address" placeholder="Enter your complete address" required>
+              <input type="text" id="signup-name" name="full_name" autocomplete="name" minlength="2" maxlength="120" placeholder="Enter your full name" required>
             </div>
           </div>
 
@@ -58,27 +50,7 @@
             <label for="email">Email Address</label>
             <div class="Signup-input">
               <i class="ri-mail-line input-icon"></i>
-              <input type="email" id="email" placeholder="Enter your email address" required>
-            </div>
-          </div>
-
-          <div class="form">
-            <label for="phone">Phone Number</label>
-            <div class="Signup-input">
-              <i class="ri-smartphone-line input-icon"></i>
-              <input type="text" id="phone" placeholder="Enter your phone number" required>
-            </div>    
-          </div>
-
-          <div class="form">
-            <label for="role">Classification / Role</label>
-            <div class="Signup-input">
-              <i class="ri-user-shared-line input-icon"></i>
-              <select id="role" required>
-                <option value="resident">Resident / Beneficiary</option>
-                <option value="admin">Administrator</option>
-              </select>
-              <i class="ri-arrow-down-s-line select-arrow"></i>
+              <input type="email" id="email" name="email" autocomplete="email" placeholder="Enter your email address" required>
             </div>
           </div>
 
@@ -86,14 +58,13 @@
             <label for="password">Password</label>
             <div class="Signup-input">
               <i class="ri-lock-line input-icon"></i>
-              <input type="password" id="password" placeholder="Create a password" required>
+              <input type="password" id="password" name="password" autocomplete="new-password" minlength="8" placeholder="Create a password (at least 8 characters)" required>
               <i class="ri-eye-off-line toggle-password"></i>
             </div>
           </div>
 
-          <button type="submit" class="submit-btn">
-            Create Account</i>
-          </button>
+          <button type="submit" class="submit-btn" id="signup-submit">Create Account</button>
+          <p class="auth-feedback" id="auth-feedback" role="status" aria-live="polite"></p>
         </form>
 
         <p class="login-page">

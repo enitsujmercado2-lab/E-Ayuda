@@ -1,26 +1,9 @@
-const togglePassword = document.querySelector('.toggle-password');
-const passwordInput = document.querySelector('#password');
-
-togglePassword.addEventListener('click', () => {
-  passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
-  togglePassword.classList.toggle('ri-eye-off-line');
-  togglePassword.classList.toggle('ri-eye-line');
-});
-
-
-// remember me 
-if (localStorage.savedName) {
-  FullName.value = localStorage.savedName;
-  password.value = localStorage.savedPassword;
-  rememberMe.checked = true;
+for (const toggle of document.querySelectorAll(".toggle-password")) {
+  toggle.addEventListener("click", () => {
+    const input = toggle.parentElement?.querySelector('input[type="password"], input[type="text"]');
+    if (!input) return;
+    input.type = input.type === "password" ? "text" : "password";
+    toggle.classList.toggle("ri-eye-off-line", input.type === "password");
+    toggle.classList.toggle("ri-eye-line", input.type === "text");
+  });
 }
-
-document.querySelector(".login-form").onsubmit = () => {
-  if (rememberMe.checked) {
-    localStorage.savedName = FullName.value;
-    localStorage.savedPassword = password.value;
-  } else {
-    localStorage.removeItem("savedName");
-    localStorage.removeItem("savedPassword");
-  }
-};
