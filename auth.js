@@ -74,7 +74,7 @@ if (loginForm) {
   async function continueToAccount(user) {
     const programId = new URLSearchParams(window.location.search).get("program");
     if (programId && programPattern.test(programId)) {
-      window.location.href = `E-ayuda%20Public.html?apply=${encodeURIComponent(programId)}`;
+      window.location.href = `index.html?apply=${encodeURIComponent(programId)}`;
       return;
     }
 
