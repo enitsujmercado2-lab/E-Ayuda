@@ -1,47 +1,234 @@
 <!DOCTYPE html>
 <html lang="en">
-<link rel="stylesheet" href="Public.css">
-<head>
-    <title>Document</title>
-</head>
-<body>
-    <header>
-        <div class = "logo"> 
-           <h1> E-ayuda </h1>
-           <p id="headertxt">Community Assistant System</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E-Ayuda</title>
+    <link rel="stylesheet" href="Public.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand" aria-label="E-Ayuda home">
+        <div class="brand-mark">♡</div>
+        <div class="brand-copy">
+          <div class="brand-name">E-Ayuda</div>
+          <small>Community Assistance Portal</small>
         </div>
-            
-        <div class = "nav">
-            <div id="home"><a href="">Home</a></div>
-            <div id="program"><a href="">Program</a></div>
-        </div>
+      </div>
+
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="#" class="active">
+          <span class="nav-icon">⌂</span>
+          <span>Home</span>
+        </a>
+        <a href="#">Programs</a>
+        <a href="#">How it works</a>
+      </nav>
+
+      <a href="#" class="portal-link">Admin portal <span>→</span></a>
     </header>
 
-
-    <div class="firstp">
+    <main class="hero">
+      <section class="hero-copy">
+        <p class="eyebrow">YOUR COMMUNITY, HERE TO HELP</p>
         <h1>Assistance made simple, fair, and accessible.</h1>
-        <p>Find government assistance programs you qualify for and apply online without waiting in long lines.</p>
-    </div>
+        <p class="subtitle">
+          Find government assistance programs you qualify for and apply online—
+          without waiting in long lines.
+        </p>
 
+        <button type="button">
+          View available programs <span>→</span>
+        </button>
+      </section>
 
+      <section class="hero-visual" aria-label="Support card illustration">
+        <div class="orb"></div>
+        <div class="support-card">
+          <div class="card-icon">♡</div>
+          <h2>Help is within reach.</h2>
+          <p>Simple forms. Clear steps. No long queues.</p>
+          <div class="progress">
+            <span></span>
+          </div>
+        </div>
+      </section>
+    </main>
 
+    <section class="programs-section">
+      <div class="programs-header">
+        <div>
+          <p class="programs-label">OPEN FOR APPLICATIONS</p>
+          <h2>Available Ayuda Programs</h2>
+          <p class="helper-text">Choose a program below to see its requirements and apply.</p>
+        </div>
+        <div class="status-pill">3 active programs</div>
+      </div>
 
+      <div class="filter-tabs" aria-label="Program categories">
+        <button class="tab active" type="button">All Programs</button>
+        <button class="tab" type="button">Food</button>
+        <button class="tab" type="button">Education</button>
+        <button class="tab" type="button">Financial</button>
+      </div>
 
+      <div class="program-cards">
+        <article class="program-card">
+          <div class="program-top">
+            <span class="program-tag">FOOD ASSISTANCE</span>
+            <span class="slots">250 slots</span>
+          </div>
+          <h3>Family Food Assistance Program</h3>
+          <p class="program-description">Monthly grocery packages for qualified low-income families in our community.</p>
 
+          <div class="eligibility-box">
+            <span class="mini-icon">◌</span>
+            <span class="eligibility-title">Who can apply</span>
+            <span class="muted">Open to all qualified residents</span>
+          </div>
 
+          <div class="meta-row">
+            <span class="meta-icon">◍</span>
+            <span>Application deadline</span>
+            <strong>April 30, 2025</strong>
+          </div>
 
-    <footer>
-        <p>You message us on: </p>
-        <div class = "platform">
-            <img id ="facebook" src = "" alt = "Facebook image">
-            <img id ="Youtube" src = "" alt = "Youtube image">
-            <img id = "instagram" src = "" alt = "Instagram image">
+          <ul class="requirement-list">
+            <li>Valid government-issued ID</li>
+            <li>Certificate of Indigency</li>
+            <li>Proof of residency</li>
+          </ul>
+
+          <button class="apply-btn" type="button">Apply for this program <span>→</span></button>
+        </article>
+
+        <article class="program-card">
+          <div class="program-top">
+            <span class="program-tag">EDUCATION ASSISTANCE</span>
+            <span class="slots">180 slots</span>
+          </div>
+          <h3>Back-to-School Supplies</h3>
+          <p class="program-description">School bags, notebooks, and learning supplies for public school students.</p>
+
+          <div class="eligibility-box">
+            <span class="mini-icon">◌</span>
+            <span class="eligibility-title">Who can apply</span>
+            <span class="muted">Public school students only</span>
+          </div>
+
+          <div class="meta-row">
+            <span class="meta-icon">◍</span>
+            <span>Application deadline</span>
+            <strong>May 18, 2025</strong>
+          </div>
+
+          <ul class="requirement-list">
+            <li>Student school ID</li>
+            <li>Certificate of Enrollment</li>
+            <li>Parent or guardian ID</li>
+          </ul>
+
+          <button class="apply-btn" type="button">Apply for this program <span>→</span></button>
+        </article>
+
+        <article class="program-card">
+          <div class="program-top">
+            <span class="program-tag">FINANCIAL ASSISTANCE</span>
+            <span class="slots">120 slots</span>
+          </div>
+          <h3>Senior Citizen Cash Aid</h3>
+          <p class="program-description">One-time financial assistance for senior citizens with urgent daily needs.</p>
+
+          <div class="eligibility-box">
+            <span class="mini-icon">◌</span>
+            <span class="eligibility-title">Who can apply</span>
+            <span class="muted">Senior citizens aged 60 and above</span>
+          </div>
+
+          <div class="meta-row">
+            <span class="meta-icon">◍</span>
+            <span>Application deadline</span>
+            <strong>May 31, 2025</strong>
+          </div>
+
+          <ul class="requirement-list">
+            <li>Senior citizen ID</li>
+            <li>Valid government-issued ID</li>
+            <li>Proof of residency</li>
+          </ul>
+
+          <button class="apply-btn" type="button">Apply for this program <span>→</span></button>
+        </article>
+      </div>
+    </section>
+
+    <section class="application-status">
+      <div class="status-panel">
+        <div class="status-copy">
+          <div class="status-icon">▣</div>
+          <div class="status-text">
+            <p class="panel-tag">APPLICATION STATUS</p>
+            <h3>Check your application</h3>
+            <p>
+              Enter the same email address you used in your application.<br>
+              Confirmed applicants will see their claim ticket here.
+            </p>
+          </div>
         </div>
 
-        <div class ="contact">
-            
-
+        <div class="status-form">
+          <label for="email" class="sr-only">Email address</label>
+          <input type="email" id="email" placeholder="Email address" />
+          <button type="button" class="check-btn">Check status</button>
         </div>
+      </div>
+    </section>
+
+    <section class="steps-section">
+      <div class="steps-wrap">
+        <p class="steps-label">A FASTER WAY TO GET HELP</p>
+        <h2>Apply in three simple steps</h2>
+
+        <div class="steps-grid">
+          <div class="step-item">
+            <span class="step-number">01</span>
+            <div class="step-copy">
+              <h3>Choose a program</h3>
+              <p>Review the details and requirements.</p>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <span class="step-number">02</span>
+            <div class="step-copy">
+              <h3>Complete your form</h3>
+              <p>Enter your information securely online.</p>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <span class="step-number">03</span>
+            <div class="step-copy">
+              <h3>Wait for confirmation</h3>
+              <p>The local team will review your application.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <div class="footer-mark">♡</div>
+          <div>
+            <div class="footer-name">E-Ayuda</div>
+            <small>Community Assistance Portal</small>
+          </div>
+        </div>
+
+        <p class="footer-note">Need help applying? Visit your Barangay Hall or call (02) 8888-1234.</p>
+      </div>
     </footer>
-</body>
+  </body>
 </html>
