@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forgot Password</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Forgot Password Modal Container -->
+  <div class="forgot-card">
+    
+    <!-- Left Section: Illustration & Headline -->
+    <div class="forgot-left">
+      <div class="illustration-wrapper">
+        <div class="illustration-bg">
+          <!-- Decorative Leaves -->
+          <svg class="leaf-left" viewBox="0 0 100 100" fill="#3b82f6">
+            <path d="M10,90 Q40,10 90,10 Q60,90 10,90 Z" />
+          </svg>
+          
+          <!-- Lock Container -->
+          <div class="lock-graphic">
+            <div class="lock-body">
+              <div class="keyhole"></div>
+            </div>
+            <!-- Password Dots Box -->
+            <div class="dots-badge">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </div>
+            <!-- Sync/Reset Circle Badge -->
+            <div class="sync-badge">
+              <i class="ri-refresh-line"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="forgot-left-title">Forgot Password?</h2>
+      <p class="forgot-left-desc">
+        No worries! Enter your email address and we’ll send you a link to reset your password.
+      </p>
+    </div>
+
+    <!-- Right Section: Reset Form -->
+    <div class="forgot-right">
+      
+      <!-- Mail Icon Badge -->
+      <div class="icon-badge mail-badge">
+        <i class="ri-mail-line"></i>
+      </div>
+
+      <h2 class="title">Reset Your Password</h2>
+      <p class="subtitle-text">
+        Enter your email address and we’ll send you instructions to reset your password.
+      </p>
+
+      <!-- Reset Password Form -->
+      <form action="#" method="POST" class="auth-form">
+        
+        <div class="form-group">
+          <label for="email">Email Address <span class="required">*</span></label>
+          <div class="input-wrapper">
+            <i class="ri-mail-line input-icon"></i>
+            <input type="email" id="email" placeholder="Enter your email address" required>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="submit-btn">
+          <i class="ri-send-plane-line"></i> Send Reset Link <i class="ri-arrow-right-line"></i>
+        </button>
+      </form>
+
+      <!-- Divider -->
+      <div class="divider">
+        <span>or</span>
+      </div>
+
+      <!-- Back to Login Link -->
+      <div class="back-link-wrapper">
+        <a href="Login.html" class="back-link">
+          <i class="ri-arrow-left-line"></i> Back to Login
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+
+</body>
+</html>
