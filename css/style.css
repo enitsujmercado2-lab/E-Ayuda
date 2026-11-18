@@ -63,9 +63,9 @@ body {
 }
 
 .subtitle {
-  font-size: 0.75rem;
+  font-size: 1.50rem;
   font-weight: 600;
-  letter-spacing: 1.5px;
+  letter-spacing: 0.7px;
   color: white;
   display: block;
   margin-bottom: 0.75rem;
@@ -761,4 +761,9 @@ body {
   .forgot-right {
     padding: 2.5rem 1.5rem;
   }
+}
+
+
+.forgot-left{
+  color:
 }
